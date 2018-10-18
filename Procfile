@@ -1,1 +1,1 @@
-web: gunicorn web_app:listing-analyzer
+web: gunicorn index:app

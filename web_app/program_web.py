@@ -12,6 +12,12 @@ from random import randint
 from PIL import Image
 from io import BytesIO
 from sightengine.client import SightengineClient
+import dash
+import os
+
+app = dash.Dash(__name__)
+server = app.server
+server.secret_key = os.environ.get('secret_key', 'secret')
 
 bp = Blueprint('search', __name__)
 
@@ -116,7 +122,8 @@ def search():
                                                         using_enhanced_brand_content,
                                                         all_images_1000)
 
-    return render_template('search.html', form=form, image_urls=image_urls, listing_score_details=listing_score_details, product_title=product_title)
+    return render_template('search.html', form=form, image_urls=image_urls, listing_score_details=listing_score_details,
+                           product_title=product_title)
 
 
 def get_html_from_asin(asin):
@@ -229,6 +236,7 @@ def scrape_top_review_ratings(html):
             continue
 
     return top_reviews
+
 
 def scrape_most_recent_review_ratings(html, asin):
     soup = html
