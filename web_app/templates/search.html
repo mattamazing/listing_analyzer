@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>Listing Analyzer</title>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
+        <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-theme.min.css') }}">
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+
+    </head>
+    <body>
+
+
+<div class="container">
+
+
+  <h2>Listing Analyzer</h2>
+  <form  action="" method="post" role="form">
+    {{ form.csrf }}
+    <div class="form-group">
+      <label for="asin">ASIN to analyze:</label>
+      <input type="text" class="form-control" id="asin" name="asin" placeholder="Enter your product's Amazon ASIN...">
+        <br>
+      <label for="main_keyword">Main keyword for this product:</label>
+      <input type="text" class="form-control" id="main_keyword" name="main_keyword" placeholder="Enter the main target keyword for your product...">
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+
+  <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+
+        {% for message in messages %}
+            {% if "Error" not in message[1]: %}
+                <div class="alert alert-info">
+                <strong>Awww snap! </strong> {{ message[1] }}
+                </div>
+            {% endif %}
+
+            {% if "Error" in message[1]: %}
+                <div class="alert alert-warning">
+                {{ message[1] }}
+                </div>
+            {% endif %}
+        {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    <br>
+    {% if listing_score_details %}
+    <h3>Score: {{ listing_score_details['Listing Score'] }}</h3>
+    <br>
+    <p><img src="{{ image_urls[0] }}" height="150" width="150"></p>
+    <p style="width: 50%; overflow: hidden; text-overflow: ellipsis;"><b>{{ product_title }}</b></p>
+    <hr>
+    <h4>Score Details:</h4>
+    {% for detail in listing_score_details %}
+        {% if listing_score_details[detail] == listing_score_details['Listing Score'] %}
+            <p></p>
+        {% else %}
+        <p><b>{{ detail }}:</b> {{ listing_score_details[detail] }} </p>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+   <br><br><br>
+
+</div>
+<br>
+</div>
+</div>
+</body>
+</html>
